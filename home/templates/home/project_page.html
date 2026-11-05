@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+
+<main>
+    <h1>{{ page.title }}</h1>
+    <p>{{ page.summary }}</p>
+
+    <section>
+        <h2>Présentation</h2>
+        {{ page.body|richtext }}
+    </section>
+
+    <section>
+        <h2>Technologies</h2>
+        <p>{{ page.technologies }}</p>
+    </section>
+
+    {% if page.repository_url %}
+        <a href="{{ page.repository_url }}" target="_blank" rel="noopener noreferrer">
+            Voir le dépôt GitHub
+        </a>
+    {% endif%}
+    
+    {% if page.demo_url %}
+        <a href="{{ page.demo_url }}" target="_blank" rel="noopener noreferrer">
+            Vidéo de démonstration
+        </a>
+    {% endif %}
+</main>
+
+{% endblock content %}
