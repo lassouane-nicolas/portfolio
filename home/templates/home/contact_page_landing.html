@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+<main>
+    <h1>{{ page.title }}</h1>
+
+    <section aria-label="Confirmation de votre message">
+        {{ page.thank_you_text|richtext }}
+    </section>
+
+    <p>
+        <a href="{% pageurl page.get_parent %}">
+            Retour à l'accueil
+        </a>
+    </p>
+</main>
+{% endblock content %}

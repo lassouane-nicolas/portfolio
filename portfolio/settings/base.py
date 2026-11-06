@@ -182,3 +182,6 @@ WAGTAILDOCS_EXTENSIONS = ['csv', 'docx', 'key', 'odt', 'pdf', 'pptx', 'rtf', 'tx
 
 # Maximum upload size for documents in bytes.
 WAGTAILDOCS_MAX_UPLOAD_SIZE = 10 * 1024 * 1024  # 10MB
+
+# Display outgoing emails in the development server console.
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"

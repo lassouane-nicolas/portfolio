@@ -1,8 +1,17 @@
 {% extends "base.html" %}
+{% load wagtailcore_tags %}
 
 {% block content %}
 <main>
     <h1>{{ page.title }}</h1>
     <p>{{ page.intro }}</p>
+
+    <form action="{% pageurl page %}" method="post">
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button type="submit">Envoyer</button>
+    </form>
 </main>
 {% endblock content %}

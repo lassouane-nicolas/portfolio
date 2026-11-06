@@ -1,8 +1,18 @@
+
+# Python virtual environment
 env/
-db.sqlite3
+
+# Python cache and compiled files
 __pycache__/
 *.pyc
 
+# Local SQLite database and backups
+db.sqlite3
+*.sqlite3.backup
+
+# Environment variables and local secrets
 .env
 .env.*
+
+# Keep the example environment configuration versioned
 !.env.example

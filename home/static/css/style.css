@@ -1,0 +1,24 @@
+/*
+ * Minimal button styling.
+ * Remove native browser appearance and preserve accessible focus.
+ */
+
+button {
+    appearance: none;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    background-color: #ffffff;
+    color: #111827;
+    padding: 10px 18px;
+    font: inherit;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #f3f4f6;
+}
+
+button:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 3px;
+}
