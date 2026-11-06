@@ -1,10 +1,12 @@
 from django.db import models
+from django.forms import CheckboxSelectMultiple
 
-from modelcluster.fields import ParentalKey
+from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from wagtail.models import Page
 from wagtail.admin.panels import FieldPanel, FieldRowPanel, InlinePanel
 from wagtail.fields import RichTextField
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
+from wagtail.snippets.models import register_snippet
 
 
 class HomePage(Page):
@@ -28,6 +30,30 @@ class StandardPage(Page):
         FieldPanel("body"),
     ]
 
+class AboutPage(Page):
+    body = RichTextField(
+        blank=True,
+        verbose_name="Contenu",
+    )
+    about_technologies = ParentalManyToManyField(
+        "home.Technology",
+        blank=True,
+        related_name="about_pages",
+        verbose_name="Technologies maîtrisées",
+    )
+
+    parent_page_types = ["home.HomePage"]
+    subpage_types = []
+
+    content_panels = Page.content_panels + [
+        FieldPanel("body"),
+        FieldPanel(
+            "about_technologies",
+            widget=CheckboxSelectMultiple,
+        ),
+    ]
+
+
 class ProjectIndexPage(Page):
     parent_page_types = ["home.HomePage"]
     subpage_types = ["home.ProjectPage"]
@@ -37,6 +63,26 @@ class ProjectIndexPage(Page):
         context["projects"] = ProjectPage.objects.child_of(self).live()
 
         return context
+
+@register_snippet
+class Technology(models.Model):
+    name = models.CharField(
+        max_length=50,
+        unique=True,
+        verbose_name="Nom",
+    )
+
+    panels = [
+        FieldPanel("name"),
+    ]
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Technologie"
+        verbose_name_plural = "Technologies"
+        ordering = ["name"]
 
 class ProjectPage(Page):
     summary = models.CharField(
@@ -52,6 +98,12 @@ class ProjectPage(Page):
         max_length=250,
         blank=True,
         verbose_name="Technologies",
+    )
+    project_technologies = ParentalManyToManyField(
+        "home.Technology",
+        blank=True,
+        related_name="projects",
+        verbose_name="Technologies associées",
     )
     repository_url = models.URLField(
         blank=True,
@@ -69,6 +121,10 @@ class ProjectPage(Page):
         FieldPanel("summary"),
         FieldPanel("body"),
         FieldPanel("technologies"),
+        FieldPanel(
+            "project_technologies",
+            widget=CheckboxSelectMultiple,
+        ),
         FieldPanel("repository_url"),
         FieldPanel("demo_url"),
     ]

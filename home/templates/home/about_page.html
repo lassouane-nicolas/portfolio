@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+    <main>
+        <h1>{{ page.title }}</h1>
+
+        <div>
+            {{ page.body|richtext }}
+        </div>
+
+        {% if page.about_technologies.all %}
+            <section aria-labelledby="technologies-title">
+                <h2 id="technologies-title">Technologies</h2>
+
+                <ul>
+                    {% for technology in page.about_technologies.all %}
+                        <li>{{ technology.name }}</li>
+                    {% endfor %}
+                </ul>
+            </section>
+        {% endif %}
+    </main>
+{% endblock %}

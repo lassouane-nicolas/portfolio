@@ -14,7 +14,9 @@
 
     <section>
         <h2>Technologies</h2>
-        <p>{{ page.technologies }}</p>
+        {% for technology in page.project_technologies.all %}
+            <span>{{ technology.name }}</span>
+        {% endfor %}
     </section>
 
     {% if page.repository_url %}
