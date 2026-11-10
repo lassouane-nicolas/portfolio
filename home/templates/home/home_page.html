@@ -1,13 +1,43 @@
 {% extends "base.html" %}
+{% load wagtailcore_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
 {% block content %}
 
-<main>
-    <p>Nicolas Lassouane</p>
-    <h1>Développeur web & IA</h1>
-    <p>{{ page.intro }}</p>
+<main class="container">
+    <section class="hero" aria-labelledby="hero-title">
+        <p>Nicolas Lassouane</p>
+        <h1 id="hero-title">Développeur web & IA</h1>
+        <p>{{ page.intro }}</p>
+    </section>
+
+    <section class="home-explore" aria-labelledby="explore-title">
+        <h2 id="explore-title">Pour aller plus loin</h2>
+
+    <div class="explore-grid">
+        <article class="explore-card">
+            <h3>Mon parcours</h3>
+            <p>
+                Mon parcours, mes compétences et mon approche
+                du développement.
+            </p>
+            <a class="explore-link" href="{% slugurl 'a-propos' %}">
+                Découvrir mon profil <span aria-hidden="true">→</span>
+            </a>
+        </article>
+
+        <article class="explore-card">
+            <h3>Mes réalisations</h3>
+            <p>
+                Applications web, API et projets de développement.
+            </p>
+            <a class="explore-link" href="{% slugurl 'projets' %}">
+                Explorer les projets <span aria-hidden="true">→</span>
+            </a>
+        </article>
+    </div>
+    </section>
 </main>
 
 {% endblock content %}

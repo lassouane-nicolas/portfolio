@@ -35,11 +35,27 @@ class AboutPage(Page):
         blank=True,
         verbose_name="Contenu",
     )
+    approach = RichTextField(
+        blank=True,
+        verbose_name="Ma démarche",
+    )
     about_technologies = ParentalManyToManyField(
         "home.Technology",
         blank=True,
         related_name="about_pages",
         verbose_name="Technologies maîtrisées",
+    )
+    timeline_before = models.TextField(
+        blank=True,
+        verbose_name="Parcours - Avant",
+    )
+    timeline_transition = models.TextField(
+        blank=True,
+        verbose_name="Parcours - La transition",
+    )
+    timeline_today = models.TextField(
+        blank=True,
+        verbose_name="Parcours - Aujourd'hui",
     )
 
     parent_page_types = ["home.HomePage"]
@@ -47,16 +63,48 @@ class AboutPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("body"),
+        FieldPanel("approach"),
+        FieldPanel("timeline_before"),
+        FieldPanel("timeline_transition"),
+        FieldPanel("timeline_today"),
         FieldPanel(
             "about_technologies",
             widget=CheckboxSelectMultiple,
         ),
     ]
 
+    def get_context(self, request):
+        context = super().get_context(request)
+
+        technologies = self.about_technologies.all()
+
+        context["technology_groups"] = [
+            {
+                "title": label,
+                "technologies": [
+                    technology
+                    for technology in technologies
+                    if technology.category == value
+                ],
+            }
+            for value, label in Technology.Category.choices
+        ]
+
+        return context
 
 class ProjectIndexPage(Page):
+    intro = models.CharField(
+        max_length=250,
+        blank=True,
+        verbose_name="Introduction",
+    )
+
     parent_page_types = ["home.HomePage"]
     subpage_types = ["home.ProjectPage"]
+
+    content_panels = Page.content_panels + [
+        FieldPanel("intro"),
+    ]
 
     def get_context(self, request):
         context = super().get_context(request)
@@ -66,14 +114,26 @@ class ProjectIndexPage(Page):
 
 @register_snippet
 class Technology(models.Model):
+    class Category(models.TextChoices):
+        DEVELOPMENT = "development", "Développement"
+        DATA = "data", "Données"
+        TOOLS = "tools", "Outils & méthodes"
+
     name = models.CharField(
         max_length=50,
         unique=True,
         verbose_name="Nom",
     )
+    category = models.CharField(
+        max_length=20,
+        choices=Category.choices,
+        default=Category.DEVELOPMENT,
+        verbose_name="Catégorie",
+    )
 
     panels = [
         FieldPanel("name"),
+        FieldPanel("category"),
     ]
 
     def __str__(self):

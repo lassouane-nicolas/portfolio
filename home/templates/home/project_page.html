@@ -3,33 +3,61 @@
 
 {% block content %}
 
-<main>
-    <h1>{{ page.title }}</h1>
-    <p>{{ page.summary }}</p>
+<main class="container">
+    <a class="project-back-link" href="{{ page.get_parent.url }}">
+        <span aria-hidden="true">←</span>
+        Retour aux projets
+    </a>
 
-    <section>
-        <h2>Présentation</h2>
-        {{ page.body|richtext }}
-    </section>
+    <header class="project-header">
+        <h1>{{ page.title }}</h1>
 
-    <section>
-        <h2>Technologies</h2>
-        {% for technology in page.project_technologies.all %}
-            <span>{{ technology.name }}</span>
-        {% endfor %}
-    </section>
+        {% if page.summary %}
+            <p class="project-summary">{{ page.summary }}</p>
+        {% endif %}
+    </header>
 
-    {% if page.repository_url %}
-        <a href="{{ page.repository_url }}" target="_blank" rel="noopener noreferrer">
-            Voir le dépôt GitHub
-        </a>
-    {% endif%}
-    
-    {% if page.demo_url %}
-        <a href="{{ page.demo_url }}" target="_blank" rel="noopener noreferrer">
-            Vidéo de démonstration
-        </a>
-    {% endif %}
+    <div class="project-layout">
+
+        <section class="project-content" aria-labelledby="project-presentation">
+            <h2 id="project-presentation">Présentation</h2>
+            {{ page.body|richtext }}
+        </section>
+
+        <aside class="project-sidebar" aria-label="Informations techniques du projet">
+
+            {% if page.project_technologies.all %}
+                <section class="project-technologies">
+                    <h2>Technologies</h2>
+                    <ul>
+                        {% for technology in page.project_technologies.all %}
+                            <li>{{ technology.name }}</li>
+                        {% endfor %}
+                    </ul>
+                </section>
+            {% endif %}
+
+            {% if page.repository_url or page.demo_url %}
+                <section class="project-links">
+                    <h2>Liens du projet</h2>
+
+                    {% if page.repository_url %}
+                        <a href="{{ page.repository_url }}" target="_blank" rel="noopener noreferrer">
+                            Voir le dépôt GitHub
+                        </a>
+                    {% endif %}
+
+                    {% if page.demo_url %}
+                        <a href="{{ page.demo_url }}" target="_blank" rel="noopener noreferrer">
+                            Vidéo de démonstration
+                        </a>
+                    {% endif %}
+                </section>
+            {% endif %}
+
+        </aside>
+
+    </div>
 </main>
 
 {% endblock content %}

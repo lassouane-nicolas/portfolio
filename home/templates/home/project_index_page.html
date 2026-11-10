@@ -3,14 +3,28 @@
 
 {% block content %}
 
-<main>
+<main class="container">
     <h1>{{ page.title }}</h1>
 
-    <section>
+    {% if page.intro %}
+        <p class="projects-intro">{{ page.intro }}</p>
+    {% endif %}
+
+    <section class="projects-grid">
         {% for project in projects %}
-            <article>
+            <article class="project-card">
                 <h2>{{ project.title }}</h2>
                 <p>{{ project.summary }}</p>
+                {% with technologies=project.project_technologies.all %}
+                    {% if technologies %}
+                        <ul class="project-card-technologies" aria-label="Technologies utilisées">
+                            {% for technology in technologies %}
+                                <li>{{ technology.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                {% endwith %}
+
                 <a href="{{ project.url }}">
                     Découvrir le projet
                 </a>

@@ -2,22 +2,63 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-    <main>
+    <main class="container">
         <h1>{{ page.title }}</h1>
 
-        <div>
+        <div class="about-content">
             {{ page.body|richtext }}
         </div>
 
-        {% if page.about_technologies.all %}
-            <section aria-labelledby="technologies-title">
-                <h2 id="technologies-title">Technologies</h2>
+        <section class="about-timeline" aria-labelledby="timeline-title">
+            <h2 id="timeline-title">Mon parcours</h2>
 
-                <ul>
-                    {% for technology in page.about_technologies.all %}
-                        <li>{{ technology.name }}</li>
+            <ol class="timeline">
+                <li class="timeline-item">
+                    <h3>Avant</h3>
+                    <p>{{ page.timeline_before }}</p>
+                </li>
+
+                <li class="timeline-item">
+                    <h3>La transition</h3>
+                    <p>{{ page.timeline_transition }}</p>
+                </li>
+
+                <li class="timeline-item">
+                    <h3>Aujourd'hui</h3>
+                    <p>{{ page.timeline_today }}</p>
+                </li>
+            </ol>
+        </section>
+
+        {% if page.about_technologies.all %}
+            <section class="about-technologies" aria-labelledby="technologies-title">
+                <h2 id="technologies-title">Compétences techniques</h2>
+
+                <div class="technology-grid">
+                    {% for group in technology_groups %}
+                        <article class="technology-card">
+                            <h3>{{ group.title }}</h3>
+
+                            <ul>
+                                {% for technology in group.technologies %}
+                                    <li>{{ technology.name }}</li>
+                                {% empty %}
+                                    <li>Aucune technologie renseignée</li>
+                                {% endfor %}
+                            </ul>
+                        </article>
                     {% endfor %}
-                </ul>
+                </div>
+            </section>
+        {% endif %}
+
+        {% if page.approach %}
+            <section class="about-approach" aria-labelledby="approach-title">
+                <h2 id="approach-title">Ma démarche</h2>
+
+                <div class="about-approach-content">
+                    {{ page.approach|richtext }}
+                </div>
             </section>
         {% endif %}
     </main>

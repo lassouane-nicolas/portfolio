@@ -2,16 +2,40 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-<main>
-    <h1>{{ page.title }}</h1>
-    <p>{{ page.intro }}</p>
+<main class="container">
+    <header class="contact-header">
+        <h1>{{ page.title }}</h1>
 
-    <form action="{% pageurl page %}" method="post">
-        {% csrf_token %}
+        {% if page.intro %}
+            <p class="contact-intro">{{ page.intro }}</p>
+        {% endif %}
+    </header>
 
-        {{ form.as_p }}
+    <section class="contact-content" aria-label="Formulaire de contact">
+        <form
+            class="contact-form"
+            action="{% pageurl page %}"
+            method="post"
+        >
+            {% csrf_token %}
 
-        <button type="submit">Envoyer</button>
-    </form>
+            {{ form.as_p }}
+
+            <button class="contact-submit" type="submit">
+                Envoyer le message
+            </button>
+
+            <p class="contact-privacy-notice">
+                Les informations saisies sont utilisées uniquement
+                pour traiter votre demande et vous répondre.
+                Consultez la
+                <a href="{% slugurl 'mentions-legales' %}">
+                    politique de confidentialité
+                </a>
+                pour en savoir plus sur leur traitement
+                et l'exercice de vos droits.
+            </p>
+        </form>
+    </section>
 </main>
 {% endblock content %}

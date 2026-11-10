@@ -2,17 +2,18 @@
 {% load wagtailcore_tags %}
 
 {% block content %}
-<main>
-    <h1>{{ page.title }}</h1>
+<main class="container">
+    <section class="contact-confirmation" aria-labelledby="confirmation-title">
+        <h1 id="confirmation-title">Merci pour votre message !</h1>
 
-    <section aria-label="Confirmation de votre message">
-        {{ page.thank_you_text|richtext }}
-    </section>
+        <div class="contact-confirmation-message">
+            {{ page.thank_you_text|richtext }}
+        </div>
 
-    <p>
-        <a href="{% pageurl page.get_parent %}">
+        <a class="contact-return-link" href="{% pageurl page.get_parent %}">
+            <span aria-hidden="true">←</span>
             Retour à l'accueil
         </a>
-    </p>
+    </section>
 </main>
 {% endblock content %}
