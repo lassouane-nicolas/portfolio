@@ -2,11 +2,13 @@ from django.db import models
 from django.forms import CheckboxSelectMultiple
 
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
-from wagtail.models import Page
-from wagtail.admin.panels import FieldPanel, FieldRowPanel, InlinePanel
+from wagtail.models import Page, Orderable
+from wagtail.admin.panels import FieldPanel, FieldRowPanel, InlinePanel, MultiFieldPanel
 from wagtail.fields import RichTextField
 from wagtail.contrib.forms.models import AbstractEmailForm, AbstractFormField
 from wagtail.snippets.models import register_snippet
+from wagtail.images.models import Image
+from wagtail.images import get_image_model_string
 
 
 class HomePage(Page):
@@ -16,8 +18,18 @@ class HomePage(Page):
         verbose_name="Introduction",
     )
 
+    portrait = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="Portrait",
+    )
+
     content_panels = Page.content_panels + [
         FieldPanel("intro"),
+        FieldPanel("portrait"),
     ]
 
 class StandardPage(Page):
@@ -34,6 +46,14 @@ class AboutPage(Page):
     body = RichTextField(
         blank=True,
         verbose_name="Contenu",
+    )
+    portrait = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="Portrait",
     )
     approach = RichTextField(
         blank=True,
@@ -63,6 +83,7 @@ class AboutPage(Page):
 
     content_panels = Page.content_panels + [
         FieldPanel("body"),
+        FieldPanel("portrait"),
         FieldPanel("approach"),
         FieldPanel("timeline_before"),
         FieldPanel("timeline_transition"),
@@ -165,6 +186,14 @@ class ProjectPage(Page):
         related_name="projects",
         verbose_name="Technologies associées",
     )
+    cover_image = models.ForeignKey(
+        "wagtailimages.Image",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="+",
+        verbose_name="Image du projet",
+    )
     repository_url = models.URLField(
         blank=True,
         verbose_name="Dépôt GitHub",
@@ -185,8 +214,36 @@ class ProjectPage(Page):
             "project_technologies",
             widget=CheckboxSelectMultiple,
         ),
+        FieldPanel("cover_image"),
+        MultiFieldPanel(
+            [
+                InlinePanel("gallery_images", label="Project gallery images"),
+            ],
+            heading="Project gallery",
+        ),
         FieldPanel("repository_url"),
         FieldPanel("demo_url"),
+    ]
+
+class ProjectPageGalleryImage(Orderable):
+    page = ParentalKey(
+        "home.ProjectPage",
+        on_delete=models.CASCADE,
+        related_name="gallery_images"
+    )
+    image = models.ForeignKey(
+        get_image_model_string(),
+        on_delete=models.CASCADE,
+        related_name="+"
+    )
+    caption = models.CharField(
+        max_length=120,
+        blank=True
+    )
+
+    panels = [
+        FieldPanel("image"),
+        FieldPanel("caption"),
     ]
 
 class ContactFormField(AbstractFormField):

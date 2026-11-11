@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
 
-<main class="container">
+<main class="container projects-page">
     <h1>{{ page.title }}</h1>
 
     {% if page.intro %}
@@ -16,6 +16,11 @@
                 <h2>{{ project.title }}</h2>
                 <p>{{ project.summary }}</p>
                 {% with technologies=project.project_technologies.all %}
+                    {% if project.cover_image %}
+                        <div class="project-card-image">
+                            {% image project.cover_image fill-640x360 %}
+                        </div>
+                    {% endif %}
                     {% if technologies %}
                         <ul class="project-card-technologies" aria-label="Technologies utilisées">
                             {% for technology in technologies %}

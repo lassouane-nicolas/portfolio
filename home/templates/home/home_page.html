@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block body_class %}template-homepage{% endblock %}
 
@@ -7,35 +7,68 @@
 
 <main class="container">
     <section class="hero" aria-labelledby="hero-title">
-        <p>Nicolas Lassouane</p>
-        <h1 id="hero-title">Développeur web & IA</h1>
-        <p>{{ page.intro }}</p>
+        <div class="hero-content">
+            <p class="hero-name">Nicolas Lassouane</p>
+            <h1 id="hero-title">Développeur web & IA</h1>
+            <p class="hero-intro">{{ page.intro }}</p>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+            <div class="hero-visual-orbit hero-visual-orbit-1"></div>
+            <div class="hero-visual-orbit hero-visual-orbit-2"></div>
+            <div class="hero-visual-core"></div>
+            <div class="hero-visual-node hero-visual-node-1"></div>
+            <div class="hero-visual-node hero-visual-node-2"></div>
+            <div class="hero-visual-node hero-visual-node-3"></div>
+            <div class="hero-visual-node hero-visual-node-4"></div>
+        </div>
     </section>
 
-    <section class="home-explore" aria-labelledby="explore-title">
-        <h2 id="explore-title">Pour aller plus loin</h2>
+    <section class="home-explore" aria-label="Explorer le portfolio">
 
     <div class="explore-grid">
-        <article class="explore-card">
+        <a class="explore-card" href="{% slugurl 'a-propos' %}">
+            <svg class="explore-icon" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="8" r="4"></circle>
+                <path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
+            </svg>
+
             <h3>Mon parcours</h3>
             <p>
-                Mon parcours, mes compétences et mon approche
-                du développement.
+                Découvrez mon parcours, mes compétences
+                et ma démarche de développement.
             </p>
-            <a class="explore-link" href="{% slugurl 'a-propos' %}">
-                Découvrir mon profil <span aria-hidden="true">→</span>
-            </a>
-        </article>
 
-        <article class="explore-card">
+            <span class="explore-link">
+                <span>Me découvrir</span>
+                <span class="explore-arrow" aria-hidden="true">↗</span>
+            </span>
+        </a>
+
+        <a class="explore-card" href="{% slugurl 'projets' %}">
+            <svg class="explore-icon" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" aria-hidden="true">
+                <path d="m8 4-6 8 6 8"></path>
+                <path d="m16 4 6 8-6 8"></path>
+                <path d="m14 3-4 18"></path>
+            </svg>
+
             <h3>Mes réalisations</h3>
             <p>
-                Applications web, API et projets de développement.
+                Explorez mes applications web, mes API
+                et mes projets de développement.
             </p>
-            <a class="explore-link" href="{% slugurl 'projets' %}">
-                Explorer les projets <span aria-hidden="true">→</span>
-            </a>
-        </article>
+
+            <span class="explore-link">
+                <span>Voir les projets</span>
+                <span class="explore-arrow" aria-hidden="true">↗</span>
+            </span>
+        </a>
     </div>
     </section>
 </main>

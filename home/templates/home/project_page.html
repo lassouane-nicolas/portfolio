@@ -1,61 +1,151 @@
+
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
 
 <main class="container">
-    <a class="project-back-link" href="{{ page.get_parent.url }}">
-        <span aria-hidden="true">←</span>
-        Retour aux projets
-    </a>
-
-    <header class="project-header">
-        <h1>{{ page.title }}</h1>
-
-        {% if page.summary %}
-            <p class="project-summary">{{ page.summary }}</p>
-        {% endif %}
-    </header>
 
     <div class="project-layout">
 
-        <section class="project-content" aria-labelledby="project-presentation">
-            <h2 id="project-presentation">Présentation</h2>
-            {{ page.body|richtext }}
-        </section>
+        <div class="project-content">
 
-        <aside class="project-sidebar" aria-label="Informations techniques du projet">
+            <header class="project-header">
+                <h1>{{ page.title }}</h1>
 
-            {% if page.project_technologies.all %}
-                <section class="project-technologies">
-                    <h2>Technologies</h2>
-                    <ul>
-                        {% for technology in page.project_technologies.all %}
-                            <li>{{ technology.name }}</li>
-                        {% endfor %}
-                    </ul>
-                </section>
-            {% endif %}
+                {% if page.summary %}
+                    <p class="project-summary">{{ page.summary }}</p>
+                {% endif %}
+            </header>
 
-            {% if page.repository_url or page.demo_url %}
-                <section class="project-links">
-                    <h2>Liens du projet</h2>
+            <section class="project-description" aria-label="Description du projet">
+                {{ page.body|richtext }}
+            </section>
 
-                    {% if page.repository_url %}
-                        <a href="{{ page.repository_url }}" target="_blank" rel="noopener noreferrer">
-                            Voir le dépôt GitHub
+            <nav class="project-navigation" aria-label="Navigation entre les projets">
+                <a class="project-back-link" href="{{ page.get_parent.url }}">
+                    <span aria-hidden="true">←</span>
+                    Tous les projets
+                </a>
+
+                {% with next_project=page.get_next_sibling %}
+                    {% if next_project %}
+                        <a class="project-next-link" href="{{ next_project.url }}">
+                            Projet suivant
+                            <span aria-hidden="true">→</span>
                         </a>
+                    {% else %}
+                        {% with first_project=page.get_first_sibling %}
+                            <a class="project-next-link" href="{{ first_project.url }}">
+                                Projet suivant
+                                <span aria-hidden="true">→</span>
+                            </a>
+                        {% endwith %}
                     {% endif %}
+                {% endwith %}
+            </nav>
 
-                    {% if page.demo_url %}
-                        <a href="{{ page.demo_url }}" target="_blank" rel="noopener noreferrer">
-                            Vidéo de démonstration
-                        </a>
-                    {% endif %}
-                </section>
-            {% endif %}
+        </div>
 
-        </aside>
+        <div class="project-aside">
+
+            {% with images=page.gallery_images.all %}
+                {% if images %}
+                    <section class="project-gallery"
+                             aria-label="Galerie d'images du projet">
+
+                        <div class="project-gallery-slides">
+                            {% for item in images %}
+                                <div class="project-gallery-slide"
+                                     {% if not forloop.first %}hidden{% endif %}>
+
+                                    {% image item.image width-800 as rendition %}
+
+                                    <img
+                                        src="{{ rendition.url }}"
+                                        width="{{ rendition.width }}"
+                                        height="{{ rendition.height }}"
+                                        alt="{{ item.caption|default:page.title }}"
+                                        loading="lazy"
+                                    >
+
+                                    {% if item.caption %}
+                                        <p class="project-gallery-caption">
+                                            {{ item.caption }}
+                                        </p>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+
+                        {% if images|length > 1 %}
+                            <div class="project-gallery-controls">
+                                <button
+                                    type="button"
+                                    class="project-gallery-prev"
+                                    aria-label="Image précédente">
+                                    ←
+                                </button>
+
+                                <span
+                                    class="project-gallery-counter"
+                                    aria-live="polite">
+                                    1 / {{ images|length }}
+                                </span>
+
+                                <button
+                                    type="button"
+                                    class="project-gallery-next"
+                                    aria-label="Image suivante">
+                                    →
+                                </button>
+                            </div>
+                        {% endif %}
+
+                    </section>
+                {% endif %}
+            {% endwith %}
+
+            <aside class="project-sidebar"
+                   aria-label="Informations techniques du projet">
+
+                {% if page.project_technologies.all %}
+                    <section class="project-technologies">
+                        <h2>Technologies</h2>
+                        <ul>
+                            {% for technology in page.project_technologies.all %}
+                                <li>{{ technology.name }}</li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+                {% endif %}
+
+                {% if page.repository_url or page.demo_url %}
+                    <section class="project-links">
+
+                        {% if page.repository_url %}
+                            <a
+                                href="{{ page.repository_url }}"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Voir le dépôt GitHub
+                            </a>
+                        {% endif %}
+
+                        {% if page.demo_url %}
+                            <a
+                                href="{{ page.demo_url }}"
+                                target="_blank"
+                                rel="noopener noreferrer">
+                                Vidéo de démonstration
+                            </a>
+                        {% endif %}
+                    </section>
+                {% endif %}
+
+            </aside>
+
+        </div>
 
     </div>
 </main>

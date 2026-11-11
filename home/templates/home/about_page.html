@@ -1,13 +1,37 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 
 {% block content %}
     <main class="container">
-        <h1>{{ page.title }}</h1>
+        <section class="about-hero" aria-labelledby="about-title">
+            <div class="about-intro">
+                <h1 id="about-title">{{ page.title }}</h1>
 
-        <div class="about-content">
-            {{ page.body|richtext }}
-        </div>
+                <div class="about-content">
+                    {{ page.body|richtext }}
+                </div>
+            </div>
+
+            {% if page.portrait %}
+                <div class="about-portrait">
+                    {% image page.portrait fill-400x500 as portrait_desktop %}
+                    {% image page.portrait fill-640x360 as portrait_mobile %}
+
+                    <picture>
+                        <source
+                            media="(max-width: 767px)"
+                            srcset="{{ portrait_mobile.url }}"
+                        >
+                        <img
+                            src="{{ portrait_desktop.url }}"
+                            width="{{ portrait_desktop.width }}"
+                            height="{{ portrait_desktop.height }}"
+                            alt="Portrait de Nicolas Lassouane"
+                        >
+                    </picture>
+                </div>
+            {% endif %}
+        </section>
 
         <section class="about-timeline" aria-labelledby="timeline-title">
             <h2 id="timeline-title">Mon parcours</h2>
@@ -37,8 +61,44 @@
                 <div class="technology-grid">
                     {% for group in technology_groups %}
                         <article class="technology-card">
-                            <h3>{{ group.title }}</h3>
+                            <div class="technology-card-header">
 
+                                {% if group.title == "Développement" %}
+                                    <svg class="technology-icon" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor"
+                                        stroke-width="1.8" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <path d="m8 4-6 8 6 8"></path>
+                                        <path d="m16 4 6 8-6 8"></path>
+                                        <path d="m14 3-4 18"></path>
+                                    </svg>
+
+                                {% elif group.title == "Données" %}
+                                    <svg class="technology-icon" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor"
+                                        stroke-width="1.8" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
+                                        <path d="M3 5v14c0 1.7 4 3 9 3s9-1.3 9-3V5"></path>
+                                        <path d="M3 12c0 1.7 4 3 9 3s9-1.3 9-3"></path>
+                                    </svg>
+
+                                {% else %}
+                                    <svg class="technology-icon" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor"
+                                        stroke-width="1.8" stroke-linecap="round"
+                                        stroke-linejoin="round" aria-hidden="true">
+                                        <path d="M4 7h9"/>
+                                        <path d="M17 7h3"/>
+                                        <circle cx="15" cy="7" r="2"/>
+                                        <path d="M4 17h3"/>
+                                        <path d="M11 17h9"/>
+                                        <circle cx="9" cy="17" r="2"/>
+                                    </svg>
+                                {% endif %}
+
+                                <h3>{{ group.title }}</h3>
+                            </div>
                             <ul>
                                 {% for technology in group.technologies %}
                                     <li>{{ technology.name }}</li>

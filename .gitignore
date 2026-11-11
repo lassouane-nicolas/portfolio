@@ -18,3 +18,6 @@ backup_*.json
 
 # Keep the example environment configuration versioned
 !.env.example
+
+# Wagtail uploaded media and generated renditions
+media/
