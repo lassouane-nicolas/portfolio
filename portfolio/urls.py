@@ -1,10 +1,12 @@
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
+from django.http import HttpResponse
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
 from wagtail.documents import urls as wagtaildocs_urls
+from wagtail.contrib.sitemaps.views import sitemap
 
 from search import views as search_views
 
@@ -13,6 +15,16 @@ urlpatterns = [
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
+    path(
+        "robots.txt",
+        lambda request: HttpResponse(
+            "User-agent: *\n"
+            "Allow: /\n"
+            "Sitemap: http://localhost/sitemap.xml\n",
+            content_type="text/plain",
+        ),
+    ),
+    path("sitemap.xml", sitemap, name="sitemap"),
 ]
 
 
