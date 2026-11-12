@@ -28,15 +28,19 @@
 
     <div class="explore-grid">
         <a class="explore-card" href="{% slugurl 'a-propos' %}">
-            <svg class="explore-icon" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor"
-                stroke-width="1.8" stroke-linecap="round"
-                stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="8" r="4"></circle>
-                <path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
-            </svg>
 
-            <h2>Mon parcours</h2>
+            <div class="explore-card-header">
+                <svg class="explore-icon" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor"
+                    stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="8" r="4"></circle>
+                    <path d="M5 21v-2a7 7 0 0 1 14 0v2"></path>
+                </svg>
+
+                <h2>Mon parcours</h2>
+            </div>
+
             <p>
                 Découvrez mon parcours, mes compétences
                 et ma démarche de développement.
@@ -49,16 +53,20 @@
         </a>
 
         <a class="explore-card" href="{% slugurl 'projets' %}">
-            <svg class="explore-icon" viewBox="0 0 24 24"
-                fill="none" stroke="currentColor"
-                stroke-width="1.8" stroke-linecap="round"
-                stroke-linejoin="round" aria-hidden="true">
-                <path d="m8 4-6 8 6 8"></path>
-                <path d="m16 4 6 8-6 8"></path>
-                <path d="m14 3-4 18"></path>
-            </svg>
 
-            <h2>Mes réalisations</h2>
+            <div class="explore-card-header">
+                <svg class="explore-icon" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor"
+                    stroke-width="1.8" stroke-linecap="round"
+                    stroke-linejoin="round" aria-hidden="true">
+                    <path d="m8 4-6 8 6 8"></path>
+                    <path d="m16 4 6 8-6 8"></path>
+                    <path d="m14 3-4 18"></path>
+                </svg>
+
+                <h2>Mes réalisations</h2>
+            </div>
+
             <p>
                 Explorez mes applications web, mes API
                 et mes projets de développement.

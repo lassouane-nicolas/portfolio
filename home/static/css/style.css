@@ -474,6 +474,16 @@ main.container {
     .explore-card {
         padding: 24px;
     }
+
+    .explore-card-header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .explore-card-header .explore-icon {
+        margin-bottom: 0;
+    }
 }
 
 /* ==========================================================================
@@ -517,12 +527,25 @@ main.container {
 .about-hero {
     display: grid;
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+    grid-template-areas:
+        "intro portrait"
+        "content portrait";
     align-items: center;
-    gap: 64px;
+    column-gap: 64px;
+    row-gap: 0;
 }
 
 .about-intro {
+    grid-area: intro;
     min-width: 0;
+}
+
+.about-content {
+    grid-area: content;
+}
+
+.about-portrait {
+    grid-area: portrait;
 }
 
 .about-intro h1 {
@@ -548,12 +571,20 @@ main.container {
 @media (max-width: 767px) {
     .about-hero {
         grid-template-columns: 1fr;
-        gap: 32px;
+        gap: 24px;
+        grid-template-areas:
+            "intro"
+            "portrait"
+            "content";
     }
 
     .about-portrait {
         max-width: 220px;
         justify-self: center;
+    }
+
+    .about-intro h1 {
+        margin: 0;
     }
 }
 
@@ -758,14 +789,6 @@ main.container {
 
 /* About page - mobile spacing */
 @media (max-width: 767px) {
-    .about-hero {
-        gap: 24px;
-    }
-
-    .about-intro h1 {
-        margin-bottom: 24px;
-    }
-
     /* About page - mobile portrait banner */
     .about-portrait {
         width: 100%;
@@ -959,9 +982,25 @@ main.container.projects-page {
 .project-layout {
     display: grid;
     grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-areas:
+        "header aside"
+        "content aside"
+        "navigation aside";
     align-items: start;
-    gap: 32px;
-    margin-top: 0px;
+    column-gap: 32px;
+    row-gap: 0;
+}
+
+.project-header {
+    grid-area: header;
+}
+
+.project-content {
+    grid-area: content;
+}
+
+.project-aside {
+    grid-area: aside;
 }
 
 .project-content,
@@ -1006,6 +1045,10 @@ main.container.projects-page {
 
 .project-next-link {
     margin-left: auto;
+}
+
+.project-navigation {
+    grid-area: navigation;
 }
 
 @media (max-width: 767px) {
@@ -1231,7 +1274,25 @@ main.container.projects-page {
 @media (max-width: 767px) {
     .project-layout {
         grid-template-columns: minmax(0, 1fr);
-        gap: 32px;
+        grid-template-areas:
+            "header"
+            "gallery"
+            "content"
+            "sidebar"
+            "navigation";
+        gap: 24px;
+    }
+
+    .project-aside {
+        display: contents;
+    }
+
+    .project-gallery {
+        grid-area: gallery;
+    }
+
+    .project-sidebar {
+        grid-area: sidebar;
     }
 
     .project-header h1 {
@@ -1270,7 +1331,9 @@ main.container.projects-page {
 
 /* Contact page - layout */
 .contact-header {
-    max-width: 650px;
+    width: 100%;
+    max-width: 600px;
+    margin-inline: auto;
 }
 
 .contact-header h1 {
@@ -1285,8 +1348,9 @@ main.container.projects-page {
 }
 
 .contact-content {
+    width: 100%;
     max-width: 600px;
-    margin-top: 48px;
+    margin: 48px auto 0;
 }
 
 .contact-form {
@@ -1489,6 +1553,14 @@ main.container.projects-page {
 @media (prefers-reduced-motion: reduce) {
     .contact-socials a {
         transition: none;
+    }
+}
+
+@media (min-width: 768px) {
+    .contact-content {
+        width: 100%;
+        max-width: 600px;
+        margin: 48px auto 0;
     }
 }
 

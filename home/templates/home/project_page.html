@@ -8,44 +8,42 @@
 
     <div class="project-layout">
 
+        <header class="project-header">
+            <h1>{{ page.title }}</h1>
+
+            {% if page.summary %}
+                <p class="project-summary">{{ page.summary }}</p>
+            {% endif %}
+        </header>
+
         <div class="project-content">
-
-            <header class="project-header">
-                <h1>{{ page.title }}</h1>
-
-                {% if page.summary %}
-                    <p class="project-summary">{{ page.summary }}</p>
-                {% endif %}
-            </header>
-
             <section class="project-description" aria-label="Description du projet">
                 {{ page.body|richtext }}
             </section>
+        </div>
 
-            <nav class="project-navigation" aria-label="Navigation entre les projets">
-                <a class="project-back-link" href="{{ page.get_parent.url }}">
-                    <span aria-hidden="true">←</span>
-                    Tous les projets
-                </a>
+        <nav class="project-navigation" aria-label="Navigation entre les projets">
+            <a class="project-back-link" href="{{ page.get_parent.url }}">
+                <span aria-hidden="true">←</span>
+                Tous les projets
+            </a>
 
-                {% with next_project=page.get_next_sibling %}
-                    {% if next_project %}
-                        <a class="project-next-link" href="{{ next_project.url }}">
+            {% with next_project=page.get_next_sibling %}
+                {% if next_project %}
+                    <a class="project-next-link" href="{{ next_project.url }}">
+                        Projet suivant
+                        <span aria-hidden="true">→</span>
+                    </a>
+                {% else %}
+                    {% with first_project=page.get_first_sibling %}
+                        <a class="project-next-link" href="{{ first_project.url }}">
                             Projet suivant
                             <span aria-hidden="true">→</span>
                         </a>
-                    {% else %}
-                        {% with first_project=page.get_first_sibling %}
-                            <a class="project-next-link" href="{{ first_project.url }}">
-                                Projet suivant
-                                <span aria-hidden="true">→</span>
-                            </a>
-                        {% endwith %}
-                    {% endif %}
-                {% endwith %}
-            </nav>
-
-        </div>
+                    {% endwith %}
+                {% endif %}
+            {% endwith %}
+        </nav>
 
         <div class="project-aside">
 
