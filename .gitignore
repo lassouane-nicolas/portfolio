@@ -1,6 +1,7 @@
 
 # Python virtual environment
 env/
+venv/
 
 # Python cache and compiled files
 __pycache__/
@@ -19,5 +20,11 @@ backup_*.json
 # Keep the example environment configuration versioned
 !.env.example
 
+# Local production settings and secrets
+local.py
+
 # Wagtail uploaded media and generated renditions
 media/
+
+# Collected static files
+/static/
