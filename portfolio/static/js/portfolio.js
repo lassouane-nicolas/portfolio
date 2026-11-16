@@ -76,7 +76,7 @@ galleries.forEach((gallery) => {
 
         intervalId = setInterval(() => {
             showSlide(currentIndex + 1);
-        }, 5000);
+        }, 4000);
     }
 
     function navigate(direction) {
