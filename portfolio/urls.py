@@ -20,7 +20,7 @@ urlpatterns = [
         lambda request: HttpResponse(
             "User-agent: *\n"
             "Allow: /\n"
-            "Sitemap: http://localhost/sitemap.xml\n",
+            "Sitemap: https://nicolas.bdx-certif-cms.tech/sitemap.xml\n",
             content_type="text/plain",
         ),
     ),
